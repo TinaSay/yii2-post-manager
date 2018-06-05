@@ -11,4 +11,11 @@ interface PostManagerInterface
      * @return array
      */
     public static function attributeTypes(): array;
+
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function populate(array $data): bool;
 }

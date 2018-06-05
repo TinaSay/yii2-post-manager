@@ -2,7 +2,9 @@
 
 namespace tina\postManager;
 
+use tina\postManager\interfaces\PostManagerInterface;
 use tina\postManager\models\PostManager;
+use tina\subscriber\filter\SubscriberFilterInterface;
 use yii\mail\MailerInterface;
 use tina\postManager\interfaces\MessageInterface;
 use Yii;
@@ -27,28 +29,47 @@ class Message implements MessageInterface
     protected $filesystem;
 
     /**
+     * @var PostManagerInterface
+     */
+    protected $postManager;
+
+    /**
+     * @var SubscriberFilterInterface
+     */
+    protected $filter;
+
+    /**
      * Message constructor.
      *
      * @param MailerInterface $mailer
      * @param FilesystemInterface $filesystem
+     * @param PostManagerInterface $postManager
+     * @param SubscriberFilterInterface $filter
      */
-    public function __construct(MailerInterface $mailer, FilesystemInterface $filesystem)
-    {
+    public function __construct(
+        MailerInterface $mailer,
+        FilesystemInterface $filesystem,
+        PostManagerInterface $postManager,
+        SubscriberFilterInterface $filter
+    ) {
         $this->mailer = $mailer;
         $this->filesystem = $filesystem;
+        $this->postManager = $postManager;
+        $this->filter = $filter;
     }
 
     /**
-     * @param PostManager $model
+     * @param $model PostManager
      *
      * @return mixed|\yii\mail\MessageInterface
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
-    public function make(PostManager $model)
+    public function make($model)
     {
-        $message = $this->mailer->compose($model->template, [
+        $message = $this->mailer->compose('@app/extensions/postManager/mail/template1', [
             'model' => $model,
         ]);
+
         if ($model->getGroup()) {
             $subscribers = $model::subscribersFinder($model->getGroup());
             if ($subscribers === null) {

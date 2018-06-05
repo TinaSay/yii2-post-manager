@@ -8,12 +8,13 @@
 
 namespace tina\postManager\actions;
 
-use tina\postManager\models\PostManager;
 use yii\base\Action;
 use Yii;
 use yii\mail\MessageInterface;
 use krok\queue\mailer\MailerJob;
 use yii\base\InvalidConfigException;
+use yii\web\Controller;
+use tina\postManager\interfaces\PostManagerInterface;
 
 /**
  * Class SendAction
@@ -38,39 +39,55 @@ class SendAction extends Action
     public $message;
 
     /**
+     * @var PostManagerInterface
+     */
+    protected $postManager;
+
+    /**
+     * PostManagerAction constructor.
+     *
+     * @param string $id
+     * @param Controller $controller
+     * @param PostManagerInterface $postManager
+     * @param array $config
+     */
+    public function __construct(
+        string $id,
+        Controller $controller,
+        PostManagerInterface $postManager,
+        array $config = []
+    ) {
+        $this->postManager = $postManager;
+        parent::__construct($id, $controller, $config);
+    }
+    /**
      * @throws InvalidConfigException
      */
     public function run()
     {
-        $model = new PostManager();
-        if ($model->load(Yii::$app->request->post())) {
+        $model = $this->postManager;
+        $request = Yii::$app->getRequest();
+        if ($request->getIsPost() && $model->populate($request->post())) {
             if (is_callable($this->message)) {
                 $this->message = call_user_func($this->message, $model);
             }
-            if (is_array($this->message)) {
-                foreach ($this->message as $mail) {
-                    if ($mail instanceof MessageInterface) {
-                        $job = Yii::createObject([
-                            'class' => MailerJob::class,
-                            'message' => $mail,
-                        ]);
-                        Yii::$app->get('queue')->push($job);
-                    } else {
-                        throw new InvalidConfigException('Invalid data type: ' . get_class($this->message) . '. ' . MessageInterface::class . ' is expected.');
-                    }
-                }
-            } elseif ($this->message instanceof MessageInterface) {
-                $job = Yii::createObject([
-                    'class' => MailerJob::class,
-                    'message' => $this->message,
-                ]);
-                Yii::$app->get('queue')->push($job);
-            } else {
-                throw new InvalidConfigException('Invalid data type: ' . get_class($this->message) . '. ' . MessageInterface::class . ' is expected.');
+            if (!is_array($this->message)) {
+                $message[] = $this->message;
             }
+            foreach ($message as $mail) {
+                if ($mail instanceof MessageInterface) {
+                    $job = Yii::createObject([
+                        'class' => MailerJob::class,
+                        'message' => $mail,
+                    ]);
+                    Yii::$app->get('queue')->push($job);
+                } else {
+                    throw new InvalidConfigException('Invalid data type: ' . get_class($this->message) . '. ' . MessageInterface::class . ' is expected.');
+                }
+            }
+            return $this->controller->redirect($this->successUrl);
         } else {
             return $this->controller->redirect($this->errorUrl);
         }
-        return $this->controller->redirect($this->successUrl);
     }
 }

@@ -10,7 +10,7 @@ namespace tina\postManager\actions;
 
 use tina\postManager\interfaces\PostManagerInterface;
 use yii\base\Action;
-use tina\postManager\models\PostManager;
+use yii\web\Controller;
 
 /**
  * Class PostManagerAction
@@ -19,23 +19,43 @@ use tina\postManager\models\PostManager;
  */
 class PostManagerAction extends Action
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public $view;
+
     /**
      * @var PostManagerInterface
      */
-    protected $configure;
+    protected $postManager;
+
+    /**
+     * PostManagerAction constructor.
+     *
+     * @param string $id
+     * @param Controller $controller
+     * @param PostManagerInterface $postManager
+     * @param array $config
+     */
+    public function __construct(
+        string $id,
+        Controller $controller,
+        PostManagerInterface $postManager,
+        array $config = []
+    ) {
+        $this->postManager = $postManager;
+        parent::__construct($id, $controller, $config);
+    }
 
     /**
      * @return string
      */
     public function run(): string
     {
-        $model = new PostManager();
+        $model = $this->postManager;
 
         return $this->controller->render($this->view, [
             'model' => $model,
         ]);
     }
-
 }

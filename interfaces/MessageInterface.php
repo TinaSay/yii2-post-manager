@@ -2,8 +2,6 @@
 
 namespace tina\postManager\interfaces;
 
-use tina\postManager\models\PostManager;
-
 /**
  * Interface MessageInterface
  *
@@ -12,9 +10,9 @@ use tina\postManager\models\PostManager;
 interface MessageInterface
 {
     /**
-     * @param PostManager $model
+     * @param $model
      *
      * @return mixed
      */
-    public function make(PostManager $model);
+    public function make($model);
 }

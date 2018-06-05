@@ -30,6 +30,7 @@ class PostManager extends Model implements PostManagerInterface
     const GROUP_1 = 'Узбекистан';
     const GROUP_2 = 'Россия';
 
+
     /**
      * @inheritdoc
      */
@@ -139,4 +140,15 @@ class PostManager extends Model implements PostManagerInterface
     {
         return ArrayHelper::getValue(static::getGroups(), $this->sendTo);
     }
+
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function populate(array $data): bool
+    {
+        return $this->load($data);
+    }
+
 }
