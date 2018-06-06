@@ -10,7 +10,7 @@ interface PostManagerInterface
     /**
      * @return array
      */
-    public static function attributeTypes(): array;
+    public function attributeTypes(): array;
 
     /**
      * @param array $data

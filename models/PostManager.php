@@ -6,7 +6,7 @@ use tina\postManager\types\DropDownType;
 use yii\base\Model;
 use tina\postManager\interfaces\PostManagerInterface;
 use yii\helpers\ArrayHelper;
-use tina\subscriber\filter\SubscriberFilter;
+use tina\subscriber\filter\SubscriberFilterInterface;
 
 /**
  * This is the model class for table "{{%subscriber}}".
@@ -24,12 +24,28 @@ class PostManager extends Model implements PostManagerInterface
     public $message;
     public $template;
 
-    const TEMPLATE_1 = '@tina/postManager/mail/template1';
-    const TEMPLATE_2 = '@tina/postManager/mail/template2';
+    const TEMPLATE_TYPICAL = '@tina/postManager/mail/template1';
+    const TEMPLATE_SPECIAL = '@tina/postManager/mail/template2';
 
-    const GROUP_1 = 'Узбекистан';
-    const GROUP_2 = 'Россия';
+    const GROUP_UZB = 'Узбекистан';
+    const GROUP_RUS = 'Россия';
 
+    /**
+     * @var SubscriberFilterInterface
+     */
+    protected $filter;
+
+    /**
+     * PostManager constructor.
+     *
+     * @param SubscriberFilterInterface $filter
+     * @param array $config
+     */
+    public function __construct(SubscriberFilterInterface $filter, array $config = [])
+    {
+        $this->filter = $filter;
+        parent::__construct($config);
+    }
 
     /**
      * @inheritdoc
@@ -60,13 +76,13 @@ class PostManager extends Model implements PostManagerInterface
     /**
      * @return array
      */
-    public static function attributeTypes(): array
+    public function attributeTypes(): array
     {
         return [
             'sendTo' => [
                 'class' => DropDownType::class,
                 'config' => [
-                    'items' => static::filter(),
+                    'items' => $this->getEmails(),
                 ],
             ],
             'subject' => 'text',
@@ -85,25 +101,22 @@ class PostManager extends Model implements PostManagerInterface
     /**
      * @param $country
      *
-     * @return array|\tina\subscriber\models\Subscriber[]
+     * @return array
      */
-    public static function subscribersFinder($country)
+    public function subscribersFinder($country)
     {
-        $subscriberFilter = new SubscriberFilter();
-
-        $query = $subscriberFilter->filter([
+        $query = $this->filter->filter([
             'country' => $country,
         ]);
         return $query;
     }
 
     /**
-     * @return array|\tina\subscriber\models\Subscriber[]
+     * @return array
      */
-    public static function filter()
+    public function getEmails()
     {
-        $subscriberFilter = new SubscriberFilter();
-        $query = $subscriberFilter->filter([
+        $query = $this->filter->filter([
             'and',
             ['like', 'email', 'oo'],
             ['like', 'city', 'Дубна'],
@@ -117,8 +130,8 @@ class PostManager extends Model implements PostManagerInterface
     public static function getTemplates(): array
     {
         return [
-            self::TEMPLATE_1 => 'Шаблон 1',
-            self::TEMPLATE_2 => 'Шаблон 2',
+            self::TEMPLATE_TYPICAL => 'Шаблон 1',
+            self::TEMPLATE_SPECIAL => 'Шаблон 2',
         ];
     }
 
@@ -128,8 +141,8 @@ class PostManager extends Model implements PostManagerInterface
     public static function getGroups()
     {
         return [
-            self::GROUP_1,
-            self::GROUP_2,
+            self::GROUP_UZB,
+            self::GROUP_RUS,
         ];
     }
 

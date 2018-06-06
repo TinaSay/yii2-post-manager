@@ -66,7 +66,7 @@ common:
 
 ```
      'definitions' => [
-        \tina\postManager\interfaces\PostManagerInterface::class => \tina\postManager\models\TestModel::class,
+        \tina\postManager\interfaces\PostManagerInterface::class => \tina\postManager\models\PostManager::class,
         \tina\subscriber\filter\SubscriberFilterInterface::class=>\tina\subscriber\filter\SubscriberFilter::class,
         \tina\postManager\actions\SendAction::class => [
             'message' => function (\tina\postManager\interfaces\PostManagerInterface $model) {

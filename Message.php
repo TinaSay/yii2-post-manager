@@ -18,6 +18,8 @@ use League\Flysystem\FilesystemInterface;
  */
 class Message implements MessageInterface
 {
+    public $template;
+
     /**
      * @var MailerInterface
      */
@@ -59,19 +61,19 @@ class Message implements MessageInterface
     }
 
     /**
-     * @param $model PostManager
+     * @param $model PostManager|PostManagerInterface
      *
      * @return mixed|\yii\mail\MessageInterface
      * @throws HttpException
      */
     public function make($model)
     {
-        $message = $this->mailer->compose('@app/extensions/postManager/mail/template1', [
+        $message = $this->mailer->compose($model->template, [
             'model' => $model,
         ]);
 
         if ($model->getGroup()) {
-            $subscribers = $model::subscribersFinder($model->getGroup());
+            $subscribers = $model->subscribersFinder($model->getGroup());
             if ($subscribers === null) {
                 throw new HttpException(404, 'The requested Item could not be found.');
             }
