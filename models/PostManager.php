@@ -10,7 +10,7 @@ use yii\base\Model;
 /**
  * This is the model class for table "{{%subscriber}}".
  *
- * @property array $sendTo
+ * @property string $sendTo
  * @property string $subject
  * @property string $message
  * @property string $template
@@ -18,13 +18,25 @@ use yii\base\Model;
  */
 class PostManager extends Model implements PostManagerInterface
 {
+    /**
+     * @var string
+     */
     public $sendTo;
+    /**
+     * @var string
+     */
     public $subject;
+    /**
+     * @var string
+     */
     public $message;
+    /**
+     * @var string
+     */
     public $template;
 
-    const TEMPLATE_TYPICAL = '@tina/postManager/mail/template1';
-    const TEMPLATE_SPECIAL = '@tina/postManager/mail/template2';
+    const TEMPLATE_TYPICAL = '@tina/postManager/mail/typical';
+    const TEMPLATE_SPECIAL = '@tina/postManager/mail/special';
 
     /**
      * @inheritdoc
@@ -33,9 +45,9 @@ class PostManager extends Model implements PostManagerInterface
     {
         return [
             [['sendTo', 'subject', 'message', 'template'], 'required'],
-            [['sendTo'], 'string'],
+            [['sendTo'], 'email'],
             [['subject', 'template'], 'string', 'max' => 64],
-            [['message'], 'string', 'max' => 256],
+            [['message'], 'string'],
         ];
     }
 
@@ -45,7 +57,7 @@ class PostManager extends Model implements PostManagerInterface
     public function attributeLabels()
     {
         return [
-            'sendTo' => 'Адресаты',
+            'sendTo' => 'Кому',
             'subject' => 'Тема',
             'message' => 'Текст сообщения',
             'template' => 'Шаблон',

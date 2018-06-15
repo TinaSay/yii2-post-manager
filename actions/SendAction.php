@@ -60,6 +60,7 @@ class SendAction extends Action
         $this->postManager = $postManager;
         parent::__construct($id, $controller, $config);
     }
+
     /**
      * @throws InvalidConfigException
      */
@@ -72,9 +73,10 @@ class SendAction extends Action
                 $this->message = call_user_func($this->message, $model);
             }
             if (!is_array($this->message)) {
-                $message[] = $this->message;
+                $this->message[] = $this->message;
             }
-            foreach ($message as $mail) {
+
+            foreach ($this->message as $mail) {
                 if ($mail instanceof MessageInterface) {
                     $job = Yii::createObject([
                         'class' => MailerJob::class,
