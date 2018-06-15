@@ -17,7 +17,9 @@ use yii\helpers\Html;
  */
 class TextAreaType extends Type
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     public $options = [
         'class' => 'form-control',
     ];

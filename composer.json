@@ -1,6 +1,6 @@
 {
     "name": "contrib/yii2-post-manager",
-    "description": "Рассылка произвольных сообщений по базе подписчиков",
+    "description": "Рассылка произвольных сообщений",
     "type": "yii2-extension",
     "keywords": [
         "yii2",
@@ -31,7 +31,6 @@
         "yii2-developer/yii2-extend": "~0.0.1 | ^0.1",
         "yii2-developer/yii2-system": "~1.0.0",
         "yii2-developer/yii2-queue": "~0.1.0",
-        "contrib/yii2-subscriber": "~0.1.1",
         "yii2-developer/yii2-tinymce": "~1.0.0",
         "yii2-developer/yii2-tinymce-uploader": "~0.1.0"
     },

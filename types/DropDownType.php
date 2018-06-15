@@ -17,10 +17,14 @@ use yii\helpers\Html;
  */
 class DropDownType extends Type
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     public $items = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $options = [
         'class' => 'form-control',
     ];

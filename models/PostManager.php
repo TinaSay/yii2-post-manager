@@ -2,9 +2,10 @@
 
 namespace tina\postManager\models;
 
+use krok\tinymce\TinyMceWidget;
+use tina\postManager\interfaces\PostManagerInterface;
 use tina\postManager\types\DropDownType;
 use yii\base\Model;
-use tina\postManager\interfaces\PostManagerInterface;
 
 /**
  * This is the model class for table "{{%subscriber}}".
@@ -60,7 +61,7 @@ class PostManager extends Model implements PostManagerInterface
             'sendTo' => 'text',
             'subject' => 'text',
             'message' => [
-                'class' => \krok\tinymce\TinyMceWidget::class,
+                'class' => TinyMceWidget::class,
             ],
             'template' => [
                 'class' => DropDownType::class,

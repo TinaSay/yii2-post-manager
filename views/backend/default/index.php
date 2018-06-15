@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $model \tina\postManager\interfaces\PostManagerInterface */
+/* @var $model \tina\postManager\interfaces\PostManagerInterface|\yii\base\Model */
 /* @var $this yii\web\View */
 /* @var  $form \yii\widgets\ActiveForm */
 
-$this->title = Yii::t('system', 'postManager');
+$this->title = Yii::t('system', 'Post manager');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
