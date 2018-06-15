@@ -3,7 +3,7 @@
 /* @var $model \tina\postManager\models\PostManager */
 
 ?>
-<h3>Вам письмо!</h3>
+<h3>Template Typical</h3>
 
 <div>
     <p><?= $model->message ?></p>

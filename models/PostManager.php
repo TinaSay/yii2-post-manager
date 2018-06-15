@@ -5,8 +5,6 @@ namespace tina\postManager\models;
 use tina\postManager\types\DropDownType;
 use yii\base\Model;
 use tina\postManager\interfaces\PostManagerInterface;
-use yii\helpers\ArrayHelper;
-use tina\subscriber\filter\SubscriberFilterInterface;
 
 /**
  * This is the model class for table "{{%subscriber}}".
@@ -26,26 +24,6 @@ class PostManager extends Model implements PostManagerInterface
 
     const TEMPLATE_TYPICAL = '@tina/postManager/mail/template1';
     const TEMPLATE_SPECIAL = '@tina/postManager/mail/template2';
-
-    const GROUP_UZB = 'Узбекистан';
-    const GROUP_RUS = 'Россия';
-
-    /**
-     * @var SubscriberFilterInterface
-     */
-    protected $filter;
-
-    /**
-     * PostManager constructor.
-     *
-     * @param SubscriberFilterInterface $filter
-     * @param array $config
-     */
-    public function __construct(SubscriberFilterInterface $filter, array $config = [])
-    {
-        $this->filter = $filter;
-        parent::__construct($config);
-    }
 
     /**
      * @inheritdoc
@@ -79,12 +57,7 @@ class PostManager extends Model implements PostManagerInterface
     public function attributeTypes(): array
     {
         return [
-            'sendTo' => [
-                'class' => DropDownType::class,
-                'config' => [
-                    'items' => $this->getEmails(),
-                ],
-            ],
+            'sendTo' => 'text',
             'subject' => 'text',
             'message' => [
                 'class' => \krok\tinymce\TinyMceWidget::class,
@@ -99,59 +72,14 @@ class PostManager extends Model implements PostManagerInterface
     }
 
     /**
-     * @param $country
-     *
-     * @return array
-     */
-    public function subscribersFinder($country)
-    {
-        $query = $this->filter->filter([
-            'country' => $country,
-        ]);
-        return $query;
-    }
-
-    /**
-     * @return array
-     */
-    public function getEmails()
-    {
-        $query = $this->filter->filter([
-            'and',
-            ['like', 'email', 'oo'],
-            ['like', 'city', 'Дубна'],
-        ]);
-        return ArrayHelper::map($query, 'email', 'email');
-    }
-
-    /**
      * @return array
      */
     public static function getTemplates(): array
     {
         return [
-            self::TEMPLATE_TYPICAL => 'Шаблон 1',
-            self::TEMPLATE_SPECIAL => 'Шаблон 2',
+            self::TEMPLATE_TYPICAL => 'Обычный',
+            self::TEMPLATE_SPECIAL => 'Праздничный',
         ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getGroups()
-    {
-        return [
-            self::GROUP_UZB,
-            self::GROUP_RUS,
-        ];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGroup()
-    {
-        return ArrayHelper::getValue(static::getGroups(), $this->sendTo);
     }
 
     /**
@@ -163,5 +91,4 @@ class PostManager extends Model implements PostManagerInterface
     {
         return $this->load($data);
     }
-
 }

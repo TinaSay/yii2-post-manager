@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $model \tina\postManager\interfaces\PostManagerInterface | \tina\postManager\models\PostManager */
+/* @var $model \tina\postManager\interfaces\PostManagerInterface */
 /* @var $this yii\web\View */
 /* @var  $form \yii\widgets\ActiveForm */
 

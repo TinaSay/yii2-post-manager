@@ -3,7 +3,7 @@
 /* @var $model \tina\postManager\models\PostManager */
 
 ?>
-<h3>Another cool template</h3>
+<h3>Template Special</h3>
 
 <p>Letter sent:</p>
 
