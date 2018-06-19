@@ -7,6 +7,7 @@ use yii\mail\MailerInterface;
 use tina\postManager\interfaces\MessageInterface;
 use Yii;
 use League\Flysystem\FilesystemInterface;
+use yii\helpers\FileHelper;
 
 /**
  * Class Message
@@ -61,15 +62,15 @@ class Message implements MessageInterface
         $message->setTo($model->sendTo);
         $message->setSubject($model->subject);
         $message->setFrom(Yii::$app->params['email']);
+        $szSearchPattern = '/<img([^src]+)src="\/attachment\/editor\/([^"]+)"/';
         $content = $model->message;
-        $szSearchPattern = '/<img(?:.+)src="?\'?([^\"\']+)/';
-        preg_match_all($szSearchPattern, $content, $jpegs);
 
-        foreach ($jpegs[1] as $jpeg) {
-            $filePath = Yii::getAlias('@public') . strstr($jpeg, '/editor/');
-            if ($filePath) {
-                $cid = $message->embed($filePath);
-                $content = str_replace($jpeg, $cid, $content);
+        if (preg_match_all($szSearchPattern, $content, $jpegs)) {
+            foreach ($jpegs[2] as $jpeg) {
+                $embedContent = $this->filesystem->getContentEditor($jpeg);
+                $cid = $message->embedContent($embedContent,
+                    ['contentType' => FileHelper::getMimeTypeByExtension($jpeg)]);
+                $content = str_replace('/attachment/editor/' . $jpeg, $cid, $content);
             }
         }
         $message->setHtmlBody($content);

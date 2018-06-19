@@ -10,7 +10,7 @@ use yii\base\Model;
 /**
  * This is the model class for table "{{%subscriber}}".
  *
- * @property string $sendTo
+ * @property array $sendTo
  * @property string $subject
  * @property string $message
  * @property string $template
@@ -47,7 +47,7 @@ class PostManager extends Model implements PostManagerInterface
             [['sendTo', 'subject', 'message', 'template'], 'required'],
             [['sendTo'], 'email'],
             [['subject', 'template'], 'string', 'max' => 64],
-            [['message'], 'string'],
+            [['message'], 'string', 'max' => 256],
         ];
     }
 
@@ -57,7 +57,7 @@ class PostManager extends Model implements PostManagerInterface
     public function attributeLabels()
     {
         return [
-            'sendTo' => 'Кому',
+            'sendTo' => 'Адресаты',
             'subject' => 'Тема',
             'message' => 'Текст сообщения',
             'template' => 'Шаблон',
