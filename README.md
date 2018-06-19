@@ -26,7 +26,7 @@ backend:
     'modules' => [
         'postManager' => [
             'class' => \tina\postManager\Module::class,
-            'viewPath' => '@tina/postManager/views/backend',
+            'viewPath' => '@vendor/contrib/yii2-post-manager/views/backend',
             'controllerNamespace' => 'tina\postManager\controllers\backend',
         ],
     ],
