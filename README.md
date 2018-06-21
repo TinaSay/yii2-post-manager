@@ -26,7 +26,7 @@ backend:
     'modules' => [
         'postManager' => [
             'class' => \tina\postManager\Module::class,
-            'viewPath' => '@tina/postManager/views/backend',
+            'viewPath' => '@vendor/contrib/yii2-post-manager/views/backend',
             'controllerNamespace' => 'tina\postManager\controllers\backend',
         ],
     ],
@@ -76,3 +76,6 @@ common:
      ],   
 
 ```
+Use
+---------
+Make file Message.php like in the example "Message.php". Alter it as per your requirements. 
