@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemInterface;
 use yii\helpers\FileHelper;
 
 /**
- * Class Message
+ * Example Class Message
  *
  * @package tina\postManager
  */

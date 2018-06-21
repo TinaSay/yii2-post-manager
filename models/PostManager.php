@@ -57,7 +57,7 @@ class PostManager extends Model implements PostManagerInterface
     public function attributeLabels()
     {
         return [
-            'sendTo' => 'Адресаты',
+            'sendTo' => 'Кому',
             'subject' => 'Тема',
             'message' => 'Текст сообщения',
             'template' => 'Шаблон',
