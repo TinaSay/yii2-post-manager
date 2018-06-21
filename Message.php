@@ -2,15 +2,20 @@
 
 namespace tina\postManager;
 
-use tina\postManager\interfaces\PostManagerInterface;
-use yii\mail\MailerInterface;
-use tina\postManager\interfaces\MessageInterface;
-use Yii;
 use League\Flysystem\FilesystemInterface;
+use tina\postManager\interfaces\MessageInterface;
+use tina\postManager\interfaces\PostManagerInterface;
+use Yii;
 use yii\helpers\FileHelper;
+use yii\mail\MailerInterface;
 
 /**
- * Example Class Message
+ * Class Message
+ *
+ * ```php
+ * This is an example of the Message class. Not recommended to use in production.
+ *
+ * ```
  *
  * @package tina\postManager
  */

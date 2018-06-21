@@ -31,6 +31,7 @@ backend:
         ],
     ],
 ```
+
 params:
 
 ```
@@ -46,6 +47,7 @@ params:
         ],
     ],
 ```
+
 console:
 
 ```
@@ -62,6 +64,7 @@ console:
         ],
     ],
 ```
+
 common:
 
 ```
@@ -76,6 +79,8 @@ common:
      ],   
 
 ```
+
 Use
----------
+---
+
 Make file Message.php like in the example "Message.php". Alter it as per your requirements. 
