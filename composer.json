@@ -31,8 +31,7 @@
         "yii2-developer/yii2-extend": "~1.0.0",
         "yii2-developer/yii2-system": "~1.0.0",
         "yii2-developer/yii2-queue": "~0.1.0",
-        "yii2-developer/yii2-tinymce": "~1.0.0",
-        "yii2-developer/yii2-tinymce-uploader": "~0.1.0",
+        "yii2-developer/yii2-tinymce": "~2.0.0",
         "yii2-developer/yii2-filesystem": "~0.2.5"
     },
     "extra": {
