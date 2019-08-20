@@ -13,5 +13,5 @@
     Message is: <?= $model->message ?>
     Template is: <?= $model->template ?>
 </div>
-<p>С уважением,
-    почтовый робот N.</p>
+
+<p>С уважением, почтовый робот N.</p>

@@ -2,6 +2,8 @@
 
 namespace tina\postManager\interfaces;
 
+use yii\mail\MessageInterface as BaseMessageInterface;
+
 /**
  * Interface MessageInterface
  *
@@ -10,9 +12,9 @@ namespace tina\postManager\interfaces;
 interface MessageInterface
 {
     /**
-     * @param $model
+     * @param PostManagerInterface $model
      *
-     * @return mixed
+     * @return BaseMessageInterface
      */
-    public function make($model);
+    public function make(PostManagerInterface $model): BaseMessageInterface;
 }

@@ -8,6 +8,7 @@
 
 namespace tina\postManager\types;
 
+use krok\select2\Select2Widget;
 use yii\helpers\Html;
 
 /**
@@ -34,6 +35,12 @@ class DropDownType extends Type
      */
     public function run()
     {
-        return Html::activeDropDownList($this->model, $this->attribute, $this->items, $this->options);
+        return Select2Widget::widget([
+            'selector' => Html::getInputId($this->model, $this->attribute),
+            'model' => $this->model,
+            'attribute' => $this->attribute,
+            'items' => $this->items,
+            'options' => $this->options,
+        ]);
     }
 }

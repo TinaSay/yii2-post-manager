@@ -26,7 +26,7 @@ class DefaultController extends Controller
         return [
             'list' => [
                 'class' => PostManagerAction::class,
-                'view' => 'index',
+                'view' => 'index.php',
             ],
             'send' => [
                 'class' => SendAction::class,

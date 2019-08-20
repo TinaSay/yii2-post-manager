@@ -8,13 +8,13 @@
 
 namespace tina\postManager\actions;
 
-use yii\base\Action;
-use Yii;
-use yii\mail\MessageInterface;
 use krok\queue\mailer\MailerJob;
-use yii\base\InvalidConfigException;
-use yii\web\Controller;
 use tina\postManager\interfaces\PostManagerInterface;
+use Yii;
+use yii\base\Action;
+use yii\base\InvalidConfigException;
+use yii\mail\MessageInterface;
+use yii\web\Controller;
 
 /**
  * Class SendAction
@@ -82,8 +82,10 @@ class SendAction extends Action
             } else {
                 throw new InvalidConfigException('Invalid data type: ' . get_class($this->message) . '. ' . MessageInterface::class . ' is expected.');
             }
+
             return $this->controller->redirect($this->successUrl);
         }
+
         return $this->controller->redirect($this->errorUrl);
     }
 }

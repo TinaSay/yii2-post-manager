@@ -14,7 +14,6 @@ use yii\base\Model;
  * @property string $subject
  * @property string $message
  * @property string $template
- *
  */
 class PostManager extends Model implements PostManagerInterface
 {
@@ -22,21 +21,24 @@ class PostManager extends Model implements PostManagerInterface
      * @var string
      */
     public $sendTo;
+
     /**
      * @var string
      */
     public $subject;
+
     /**
      * @var string
      */
     public $message;
+
     /**
      * @var string
      */
     public $template;
 
-    const TEMPLATE_TYPICAL = '@tina/postManager/mail/typical';
-    const TEMPLATE_SPECIAL = '@tina/postManager/mail/special';
+    const TEMPLATE_TYPICAL = '@tina/postManager/mail/typical.php';
+    const TEMPLATE_SPECIAL = '@tina/postManager/mail/special.php';
 
     /**
      * @inheritdoc

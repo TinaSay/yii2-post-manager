@@ -53,12 +53,16 @@ console:
 ```
     'config' => [
         [
+            'label' => 'Post Manager',
             'name' => 'postManager',
             'controllers' => [
                 'default' => [
-                    'index',
-                    'list',
-                    'send',
+                    'label' => 'Post Manager',
+                    'actions' =>[
+                        'index',
+                        'list',
+                        'send',
+                    ],
                 ],
             ],
         ],

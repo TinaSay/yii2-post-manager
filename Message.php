@@ -2,12 +2,12 @@
 
 namespace tina\postManager;
 
-use League\Flysystem\FilesystemInterface;
 use tina\postManager\interfaces\MessageInterface;
 use tina\postManager\interfaces\PostManagerInterface;
 use Yii;
-use yii\helpers\FileHelper;
+use yii\base\Model;
 use yii\mail\MailerInterface;
+use yii\mail\MessageInterface as BaseMessageInterface;
 
 /**
  * Class Message
@@ -27,58 +27,31 @@ class Message implements MessageInterface
     protected $mailer;
 
     /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
-
-    /**
-     * @var PostManagerInterface
-     */
-    protected $postManager;
-
-    /**
      * Message constructor.
      *
      * @param MailerInterface $mailer
-     * @param FilesystemInterface $filesystem
-     * @param PostManagerInterface $postManager
      */
-    public function __construct(
-        MailerInterface $mailer,
-        FilesystemInterface $filesystem,
-        PostManagerInterface $postManager
-    ) {
+    public function __construct(MailerInterface $mailer)
+    {
         $this->mailer = $mailer;
-        $this->filesystem = $filesystem;
-        $this->postManager = $postManager;
     }
 
     /**
-     * @param $model
+     * @param PostManagerInterface|Model|object $model
      *
-     * @return mixed|\yii\mail\MessageInterface
+     * @return BaseMessageInterface
      */
-    public function make($model)
+    public function make(PostManagerInterface $model): BaseMessageInterface
     {
         $message = $this->mailer->compose($model->template, [
             'model' => $model,
         ]);
 
-        $message->setTo($model->sendTo);
         $message->setSubject($model->subject);
+        $message->setTo($model->sendTo);
         $message->setFrom(Yii::$app->params['email']);
-        $szSearchPattern = '/<img([^src]+)src="\/attachment\/editor\/([^"]+)"/';
-        $content = $model->message;
+        $message->setHtmlBody($model->message);
 
-        if (preg_match_all($szSearchPattern, $content, $jpegs)) {
-            foreach ($jpegs[2] as $jpeg) {
-                $embedContent = $this->filesystem->getContentEditor($jpeg);
-                $cid = $message->embedContent($embedContent,
-                    ['contentType' => FileHelper::getMimeTypeByExtension($jpeg)]);
-                $content = str_replace('/attachment/editor/' . $jpeg, $cid, $content);
-            }
-        }
-        $message->setHtmlBody($content);
         return $message;
     }
 }
