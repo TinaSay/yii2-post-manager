@@ -13,6 +13,10 @@
         {
             "name": "tina",
             "email": "sayapina.tina@gmail.com"
+        },
+        {
+            "name": "krok",
+            "email": "yii2.developer@gmail.com"
         }
     ],
     "repositories": [
@@ -36,7 +40,7 @@
     },
     "autoload": {
         "psr-4": {
-            "tina\\postManager\\": ""
+            "tina\\postManager\\": "src"
         }
     }
 }
