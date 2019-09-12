@@ -2,8 +2,6 @@
 
 namespace tina\postManager\interfaces;
 
-use yii\mail\MessageInterface as BaseMessageInterface;
-
 /**
  * Interface MessageInterface
  *
@@ -14,7 +12,7 @@ interface MessageInterface
     /**
      * @param PostManagerInterface $model
      *
-     * @return BaseMessageInterface
+     * @return bool
      */
-    public function make(PostManagerInterface $model): BaseMessageInterface;
+    public function send(PostManagerInterface $model): bool;
 }

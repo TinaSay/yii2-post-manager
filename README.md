@@ -59,7 +59,6 @@ console:
                 'default' => [
                     'label' => 'Post Manager',
                     'actions' =>[
-                        'index',
                         'list',
                         'send',
                     ],
@@ -73,12 +72,11 @@ common:
 
 ```
      'definitions' => [
+        \tina\postManager\interfaces\MessageInterface::class => \app\modules\postManager\Message::class,
         \tina\postManager\interfaces\PostManagerInterface::class => \tina\postManager\models\PostManager::class,
         \tina\postManager\actions\SendAction::class => [
-            'message' => function (\tina\postManager\interfaces\PostManagerInterface $model) {
-                $message = Yii::createObject(\tina\postManager\Message::class);
-                return $message->make($model);
-            },
+            'successUrl' => ['/postManager/default'],
+            'errorUrl' => ['/postManager/default'],
         ],
      ],   
 

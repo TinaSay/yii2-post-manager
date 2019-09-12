@@ -48,8 +48,8 @@ class PostManager extends Model implements PostManagerInterface
         return [
             [['sendTo', 'subject', 'message', 'template'], 'required'],
             [['sendTo'], 'email'],
-            [['subject', 'template'], 'string', 'max' => 64],
-            [['message'], 'string', 'max' => 256],
+            [['subject', 'template'], 'string', 'max' => 256],
+            [['message'], 'string'],
         ];
     }
 
@@ -104,6 +104,6 @@ class PostManager extends Model implements PostManagerInterface
      */
     public function populate(array $data): bool
     {
-        return $this->load($data);
+        return $this->load($data) && $this->validate();
     }
 }

@@ -43,8 +43,9 @@ class PostManagerAction extends Action
         PostManagerInterface $postManager,
         array $config = []
     ) {
-        $this->postManager = $postManager;
         parent::__construct($id, $controller, $config);
+
+        $this->postManager = $postManager;
     }
 
     /**

@@ -8,13 +8,12 @@
 
 namespace tina\postManager\actions;
 
-use krok\queue\mailer\MailerJob;
+use tina\postManager\interfaces\MessageInterface;
 use tina\postManager\interfaces\PostManagerInterface;
 use Yii;
 use yii\base\Action;
-use yii\base\InvalidConfigException;
-use yii\mail\MessageInterface;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * Class SendAction
@@ -34,9 +33,9 @@ class SendAction extends Action
     public $errorUrl;
 
     /**
-     * @var MessageInterface message instance
+     * @var MessageInterface
      */
-    public $message;
+    protected $message;
 
     /**
      * @var PostManagerInterface
@@ -44,47 +43,44 @@ class SendAction extends Action
     protected $postManager;
 
     /**
-     * PostManagerAction constructor.
+     * SendAction constructor.
      *
      * @param string $id
      * @param Controller $controller
+     * @param MessageInterface $message
      * @param PostManagerInterface $postManager
      * @param array $config
      */
     public function __construct(
         string $id,
         Controller $controller,
+        MessageInterface $message,
         PostManagerInterface $postManager,
         array $config = []
     ) {
-        $this->postManager = $postManager;
         parent::__construct($id, $controller, $config);
+
+        $this->message = $message;
+        $this->postManager = $postManager;
     }
 
     /**
-     * @throws InvalidConfigException
+     * @return Response
      */
     public function run()
     {
         $model = $this->postManager;
         $request = Yii::$app->getRequest();
-        if ($request->getIsPost() && $model->populate($request->post())) {
-            if (is_callable($this->message)) {
-                $this->message = call_user_func($this->message, $model);
-            }
 
-            if ($this->message instanceof MessageInterface) {
-                $job = Yii::createObject([
-                    'class' => MailerJob::class,
-                    'message' => $this->message,
-                ]);
-                Yii::$app->get('queue')->push($job);
-            } else {
-                throw new InvalidConfigException('Invalid data type: ' . get_class($this->message) . '. ' . MessageInterface::class . ' is expected.');
-            }
+        if ($request->getIsPost() && $model->populate($request->post())) {
+            $this->message->send($model);
+
+            Yii::$app->getSession()->addFlash('info', 'Успешно отправленно');
 
             return $this->controller->redirect($this->successUrl);
         }
+
+        Yii::$app->getSession()->addFlash('danger', 'Ошибка отправки');
 
         return $this->controller->redirect($this->errorUrl);
     }
